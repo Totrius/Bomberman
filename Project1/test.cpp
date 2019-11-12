@@ -75,7 +75,7 @@ void test ()
 
 		//rysowanie z buforowaniem 
 		// czysci okno, wypelniajac kolorem
-		window.clear(sf::Color::White);
+		window.clear(sf::Color::Yellow);
 
 		// procedura rysujaca poszczegolne obiekty w oknie
 		// umieszcza obiekty w buforze

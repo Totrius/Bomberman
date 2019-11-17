@@ -2,9 +2,10 @@
 #include <SFML/Audio.hpp>
 #include <iostream>
 #include "test.h"
+#include "postac.h"
 
 #define MAX_LICZBA_POZIOMOW 3
-//#define TEST
+#define TEST
 
 class Menu
 {
@@ -98,15 +99,19 @@ void myDelay(int opoznienie)
 int main()
 {
 #ifdef TEST
-	test();
+	gracz();
 	return 0;
 #endif
 	int wybrane_menu = 0;
 	sf::Music music;
-	if (!music.openFromFile("Tetris_theme.ogg"))
+	if (!music.openFromFile("menu_theme.ogg"))
 		return -1; // error
 	music.setLoop(true);
 	music.play();
+
+	
+	
+	
 
 	sf::RenderWindow window(sf::VideoMode(800, 600), "My Bombeer");// utworz okno
 

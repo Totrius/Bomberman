@@ -99,18 +99,17 @@ void myDelay(int opoznienie)
 int main()
 {
 #ifdef TEST
-	gracz();
+	postac();
 	return 0;
 #endif
 	int wybrane_menu = 0;
+	
+	
 	sf::Music music;
 	if (!music.openFromFile("menu_theme.ogg"))
 		return -1; // error
 	music.setLoop(true);
 	music.play();
-
-	
-	
 	
 
 	sf::RenderWindow window(sf::VideoMode(800, 600), "My Bombeer");// utworz okno

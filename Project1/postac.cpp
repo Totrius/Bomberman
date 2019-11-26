@@ -15,10 +15,13 @@ public:
 	void draw(sf::RenderWindow& window);
 
 };
-gracz::gracz() {
+gracz::gracz() :
+	
+	ksztaltgracza(0, 0, 64, 64),//okresl obszar spritea
+	ludzik(tekstura, ksztaltgracza)//utworz spritea powiazanego z tekstura
+{
 	tekstura.loadFromFile("tiles.png");//laduj teksture
-	sf::IntRect ksztaltgracza(0, 0, 64, 64);//okresl obszar spritea
-	sf::Sprite ludzik(tekstura, ksztaltgracza);//utworz spritea powiazanego z tekstura
+	
 }
 void gracz::draw(sf::RenderWindow& window)
 {

@@ -4,6 +4,8 @@
 #include "test.h"
 #include "postac.h"
 
+#include "mapa.h"
+
 #define MAX_LICZBA_POZIOMOW 3
 #define TEST
 
@@ -94,8 +96,6 @@ void myDelay(int opoznienie)
 
 	}
 }
-
-
 int main()
 {
 #ifdef TEST

@@ -7,46 +7,34 @@ Mapa::Mapa(int rozmiar_x, int rozmiar_y) {
 	rozmiar_mapy_y = rozmiar_y;
 
 	//dynamiczne tworzenie tablic kafelków
-	pola_mapy = new pole * [rozmiar_y];
-	for (int y = 0; y < rozmiar_mapy_y; ++y) {
-		pola_mapy[y] = new pole[rozmiar_mapy_x];
+	pola_mapy = new pole * [rozmiar_x];
+	for (int x = 0; x < rozmiar_mapy_x; ++x) {
+		pola_mapy[x] = new pole[rozmiar_mapy_y]; // generownaie drugiego wymiaru
 
-		for (int x = 0; x < rozmiar_mapy_x; x++) {
+		for (int y = 0; y < rozmiar_mapy_y; y++) {
 			//ustawianie prostok¹ta tekstury w ca³ym spritesheet
-			pola_mapy[y][x].ksztalt_wewnetrzny = sf::IntRect(256, 192, 64, 64);
-
-			//ustawianie prostok¹tów na ekranie
-			pola_mapy[y][x].ksztalt.setPosition(sf::Vector2f(64 * x, 64 * y));
-			pola_mapy[y][x].ksztalt.setSize(sf::Vector2f(64, 64));
-
-			//³¹czenie tekstury z prostok¹tami
-			pola_mapy[y][x].ksztalt.setTexture(&textura_kafelkow);
-			pola_mapy[y][x].ksztalt.setTextureRect(pola_mapy[y][x].ksztalt_wewnetrzny);
-
-			//domyslne ustawienia pola
-			pola_mapy[y][x].destroyable = false; //false == 1
-			pola_mapy[y][x].go_trough = true;
-
-			//generowanie mapy
-			// if (y == 0 || x == 0){
-			//   //na pewno sta³y blok
-			// }
+			
+			if (x == 0 || y == 0 || x == rozmiar_mapy_x - 1 || y == rozmiar_mapy_y - 1) {
+				pola_mapy[x][y] = zwroc_blok(x, y);
+			}
+			else { 
+				pola_mapy[x][y] = zwroc_pusty(x, y);
+			}
 		}
+
 	}
+	pola_mapy[2][2] = zwroc_cegly(2, 2);
+	pola_mapy[4][2] = zwroc_cegly(4, 2);
+	pola_mapy[2][4] = zwroc_cegly(2, 4);
+	pola_mapy[6][2] = zwroc_cegly(6, 2);
+	pola_mapy[8][2] = zwroc_cegly(8, 2);
+	pola_mapy[4][4] = zwroc_cegly(4, 4);
+	pola_mapy[6][4] = zwroc_cegly(6, 4);
+	//pola_mapy[8][4] = zwroc_cegly(8, 4);
 
-	//testowanie kafelków
-	pola_mapy[1][3].ksztalt_wewnetrzny = sf::IntRect(0, 192, 64, 64); // zmiania teksturki
-	pola_mapy[1][6].ksztalt_wewnetrzny = sf::IntRect(0, 192, 64, 64);
-	pola_mapy[2][3].ksztalt_wewnetrzny = sf::IntRect(0, 192, 64, 64);
-	pola_mapy[4][9].ksztalt_wewnetrzny = sf::IntRect(0, 192, 64, 64);
-	pola_mapy[5][5].ksztalt_wewnetrzny = sf::IntRect(0, 192, 64, 64);
 
-	pola_mapy[1][3].ksztalt.setTextureRect(pola_mapy[1][3].ksztalt_wewnetrzny); // "zatwierdzenie"
-	pola_mapy[1][6].ksztalt.setTextureRect(pola_mapy[1][6].ksztalt_wewnetrzny);
-	pola_mapy[2][3].ksztalt.setTextureRect(pola_mapy[2][3].ksztalt_wewnetrzny);
-	pola_mapy[4][9].ksztalt.setTextureRect(pola_mapy[4][9].ksztalt_wewnetrzny);
-	pola_mapy[5][5].ksztalt.setTextureRect(pola_mapy[5][5].ksztalt_wewnetrzny);
 
+	
 }
 
 Mapa::~Mapa() {
@@ -60,7 +48,53 @@ Mapa::~Mapa() {
 void Mapa::rysuj(sf::RenderWindow& window) {
 	for (int y = 0; y < rozmiar_mapy_y; ++y) {
 		for (int x = 0; x < rozmiar_mapy_x; x++) {
-			window.draw(pola_mapy[y][x].ksztalt);
+			window.draw(pola_mapy[x][y].ksztalt);
 		}
 	}
+}
+
+pole Mapa::zwroc_cegly(int x, int y) {
+	pole cegla;
+	cegla.czy_zniszczalny = true;
+	cegla.czy_przechodzi = false;
+	cegla.ksztalt.setPosition(sf::Vector2f(64 * x, 64 * y));
+	cegla.ksztalt.setSize(sf::Vector2f(64, 64));
+	cegla.ksztalt.setTexture(&textura_kafelkow);
+	cegla.ksztalt_wewnetrzny = sf::IntRect(256, 192, 64, 64);
+	cegla.ksztalt.setTextureRect(cegla.ksztalt_wewnetrzny);
+	
+	return cegla;
+}
+pole Mapa::zwroc_blok(int x, int y) {
+	pole blok;
+	blok.czy_zniszczalny = false;
+	blok.czy_przechodzi = false;
+	blok.ksztalt.setPosition(sf::Vector2f(64 * x, 64 * y));
+	blok.ksztalt.setSize(sf::Vector2f(64, 64));
+	blok.ksztalt.setTexture(&textura_kafelkow);
+	blok.ksztalt_wewnetrzny = sf::IntRect(192, 192, 64, 64);
+	blok.ksztalt.setTextureRect(blok.ksztalt_wewnetrzny);
+
+	return blok;
+}
+pole Mapa::zwroc_pusty(int x, int y) {
+	pole pusty;
+	pusty.czy_zniszczalny = false;
+	pusty.czy_przechodzi = true;
+	pusty.ksztalt.setPosition(sf::Vector2f(64 * x, 64 * y));
+	pusty.ksztalt.setSize(sf::Vector2f(64, 64));
+	pusty.ksztalt.setTexture(&textura_kafelkow);
+	pusty.ksztalt_wewnetrzny = sf::IntRect(256, 256, 64, 64);
+	pusty.ksztalt.setTextureRect(pusty.ksztalt_wewnetrzny);
+
+	return pusty;
+}
+pole Mapa::pobierz_pole(int x, int y) {
+	if (x <= 0 || y <= 0 || x>=rozmiar_mapy_x || y>=rozmiar_mapy_y) {
+		return zwroc_blok(x, y);
+	}
+	return pola_mapy[x][y];
+}
+sf::Vector2i Mapa::piksele_na_wspolrzedne(int x, int y) {
+	return sf::Vector2i(x / 64, y / 64);
 }

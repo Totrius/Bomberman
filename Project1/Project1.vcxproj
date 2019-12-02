@@ -137,16 +137,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Gra.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mapa.cpp" />
     <ClCompile Include="menu.cpp" />
-    <ClCompile Include="postac.cpp" />
-    <ClCompile Include="test.cpp" />
+    <ClCompile Include="gracz.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Gra.h" />
     <ClInclude Include="mapa.h" />
-    <ClInclude Include="postac.h" />
-    <ClInclude Include="test.h" />
+    <ClInclude Include="menu.h" />
+    <ClInclude Include="gracz.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

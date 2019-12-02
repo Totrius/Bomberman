@@ -18,21 +18,30 @@
     <ClCompile Include="menu.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="test.cpp">
-      <Filter>Pliki źródłowe</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="postac.cpp">
+    <ClCompile Include="mapa.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="Gra.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="gracz.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="test.h">
+    <ClInclude Include="mapa.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="postac.h">
+    <ClInclude Include="Gra.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="menu.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="gracz.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
   </ItemGroup>

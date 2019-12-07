@@ -1,7 +1,7 @@
 #include "Gra.h"
 
 Gra::Gra() :
-	mapa(11, 7)
+	mapa(15, 11)
 {}
 
 void Gra::rysuj(sf::RenderWindow& window) {

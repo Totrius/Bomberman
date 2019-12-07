@@ -20,7 +20,7 @@ int main()
 	//Rysuj grê
 	wybrane_menu = 100;
 
-	sf::RenderWindow window(sf::VideoMode(800, 600), "My Bombeer");// utworz okno
+	sf::RenderWindow window(sf::VideoMode(1000, 800), "My Bombeer");// utworz okno
 
 	Menu menu(window.getSize().x, window.getSize().y);
 	Gra gra;

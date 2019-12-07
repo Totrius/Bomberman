@@ -8,6 +8,8 @@ Gracz::Gracz():
 	ksztaltgracza(0, 0, 64, 64),//okresl obszar spritea
 	ludzik(tekstura, ksztaltgracza)//utworz spritea powiazanego z tekstura
 {
+	if (!tekstura.loadFromFile("tiles.png"))
+		return; // error
 	tekstura.loadFromFile("tiles.png");//laduj teksture
 	
 	ludzik.setTextureRect(ksztaltgracza);

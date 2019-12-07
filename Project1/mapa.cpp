@@ -1,7 +1,9 @@
 #include"mapa.h"
 
 Mapa::Mapa(int rozmiar_x, int rozmiar_y) {
-	//TODO: powinno byæ sprawdzanie b³êdu!
+
+	if (!textura_kafelkow.loadFromFile("tiles.png"))
+		return; // error
 	textura_kafelkow.loadFromFile("tiles.png");
 	rozmiar_mapy_x = rozmiar_x;
 	rozmiar_mapy_y = rozmiar_y;
@@ -14,7 +16,7 @@ Mapa::Mapa(int rozmiar_x, int rozmiar_y) {
 		for (int y = 0; y < rozmiar_mapy_y; y++) {
 			//ustawianie prostok¹ta tekstury w ca³ym spritesheet
 			
-			if (x == 0 || y == 0 || x == rozmiar_mapy_x - 1 || y == rozmiar_mapy_y - 1) {
+			if (x == 0 || y == 0 || x == rozmiar_mapy_x - 1 || y == rozmiar_mapy_y - 1 || (x%2 == 0 && y%2 ==0)) {
 				pola_mapy[x][y] = zwroc_blok(x, y);
 			}
 			else { 
@@ -23,14 +25,7 @@ Mapa::Mapa(int rozmiar_x, int rozmiar_y) {
 		}
 
 	}
-	pola_mapy[2][2] = zwroc_cegly(2, 2);
-	pola_mapy[4][2] = zwroc_cegly(4, 2);
-	pola_mapy[2][4] = zwroc_cegly(2, 4);
-	pola_mapy[6][2] = zwroc_cegly(6, 2);
-	pola_mapy[8][2] = zwroc_cegly(8, 2);
-	pola_mapy[4][4] = zwroc_cegly(4, 4);
-	pola_mapy[6][4] = zwroc_cegly(6, 4);
-	//pola_mapy[8][4] = zwroc_cegly(8, 4);
+	
 
 
 

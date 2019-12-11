@@ -8,8 +8,8 @@ Gracz::Gracz():
 	ksztaltgracza(0, 0, 64, 64),//okresl obszar spritea
 	ludzik(tekstura, ksztaltgracza)//utworz spritea powiazanego z tekstura
 {
-	if (!tekstura.loadFromFile("tiles.png"))
-		return; // error
+	predkosc = 160; //predkosc gracza w pikselach na sekunde
+	max_bomb = 3;
 	tekstura.loadFromFile("tiles.png");//laduj teksture
 	
 	ludzik.setTextureRect(ksztaltgracza);
@@ -18,7 +18,7 @@ Gracz::Gracz():
 void Gracz::draw(sf::RenderWindow& window)
 {
 	window.draw(ludzik);
-}
+ }
 
 void Gracz::animuj(int x, int y) {
 	if (ksztaltgracza.left < x || ksztaltgracza.left > x + 128){
@@ -35,7 +35,7 @@ void Gracz::animuj(int x, int y) {
 			ksztaltgracza.left += 64;//przemieszczaj sie w poziomie tekstury
 
 		ludzik.setTextureRect(ksztaltgracza);
-		std::cout << "Klatka nr: " << ksztaltgracza.left / 64 << std::endl;
+	
 		zegar.restart();
 	}
 }

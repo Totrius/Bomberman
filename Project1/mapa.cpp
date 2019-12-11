@@ -14,6 +14,7 @@ Mapa::Mapa(int rozmiar_x, int rozmiar_y) {
 		pola_mapy[x] = new pole[rozmiar_mapy_y]; // generownaie drugiego wymiaru
 
 		for (int y = 0; y < rozmiar_mapy_y; y++) {
+			pola_mapy[x][y].czy_jest_bomba = false;
 			//ustawianie prostok¹ta tekstury w ca³ym spritesheet
 			
 			if (x == 0 || y == 0 || x == rozmiar_mapy_x - 1 || y == rozmiar_mapy_y - 1 || (x%2 == 0 && y%2 ==0)) {
@@ -24,25 +25,23 @@ Mapa::Mapa(int rozmiar_x, int rozmiar_y) {
 			}
 		}
 
+		if (x > 0 && x < rozmiar_mapy_x-1)
+			pola_mapy[x][5] = zwroc_cegly(x, 5);
 	}
-	
-
-
-
 	
 }
 
 Mapa::~Mapa() {
 	//usuwanie dynamicznie utworzonej tablicy 2D
-	for (int i = 0; i < rozmiar_mapy_y; ++i) {
+	for (int i = 0; i < rozmiar_mapy_x; ++i) {
 		delete pola_mapy[i];
 	}
 	delete[] pola_mapy;
 }
 
 void Mapa::rysuj(sf::RenderWindow& window) {
-	for (int y = 0; y < rozmiar_mapy_y; ++y) {
-		for (int x = 0; x < rozmiar_mapy_x; x++) {
+	for (int x = 0; x < rozmiar_mapy_x; ++x) {
+		for (int y = 0; y < rozmiar_mapy_y; y++) {
 			window.draw(pola_mapy[x][y].ksztalt);
 		}
 	}
@@ -52,6 +51,7 @@ pole Mapa::zwroc_cegly(int x, int y) {
 	pole cegla;
 	cegla.czy_zniszczalny = true;
 	cegla.czy_przechodzi = false;
+	cegla.czy_jest_bomba = false;
 	cegla.ksztalt.setPosition(sf::Vector2f(64 * x, 64 * y));
 	cegla.ksztalt.setSize(sf::Vector2f(64, 64));
 	cegla.ksztalt.setTexture(&textura_kafelkow);
@@ -64,6 +64,7 @@ pole Mapa::zwroc_blok(int x, int y) {
 	pole blok;
 	blok.czy_zniszczalny = false;
 	blok.czy_przechodzi = false;
+	blok.czy_jest_bomba = false;
 	blok.ksztalt.setPosition(sf::Vector2f(64 * x, 64 * y));
 	blok.ksztalt.setSize(sf::Vector2f(64, 64));
 	blok.ksztalt.setTexture(&textura_kafelkow);
@@ -76,6 +77,7 @@ pole Mapa::zwroc_pusty(int x, int y) {
 	pole pusty;
 	pusty.czy_zniszczalny = false;
 	pusty.czy_przechodzi = true;
+	pusty.czy_jest_bomba = false;
 	pusty.ksztalt.setPosition(sf::Vector2f(64 * x, 64 * y));
 	pusty.ksztalt.setSize(sf::Vector2f(64, 64));
 	pusty.ksztalt.setTexture(&textura_kafelkow);
@@ -84,9 +86,10 @@ pole Mapa::zwroc_pusty(int x, int y) {
 
 	return pusty;
 }
-pole Mapa::pobierz_pole(int x, int y) {
+pole& Mapa::pobierz_pole(int x, int y) {
 	if (x <= 0 || y <= 0 || x>=rozmiar_mapy_x || y>=rozmiar_mapy_y) {
-		return zwroc_blok(x, y);
+		auto b = zwroc_blok(x,y);
+		return b;
 	}
 	return pola_mapy[x][y];
 }

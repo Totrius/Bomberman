@@ -1,5 +1,6 @@
 #include "menu.h"
 #include "Gra.h"
+#include "Bomba.h"
 
 //#define TEST
 
@@ -77,15 +78,16 @@ int main()
 		}
 
 		// wyczysc obszar rysowania
-		window.clear();
+		window.clear(sf::Color::Magenta);
+	
 		// tutaj umiesc procedury rysujace...
-		// window.draw(...);
 		if (wybrane_menu == 0) {
 			menu.draw(window);
 		}
 		if (wybrane_menu == 100) {
 			gra.rysuj(window);
 		}
+
 
 		// ostatnia czynnosc - wyswietl okno wraz zawartoscia
 		window.display();

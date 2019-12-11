@@ -137,6 +137,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Bomba.cpp" />
     <ClCompile Include="Gra.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mapa.cpp" />
@@ -144,6 +145,7 @@
     <ClCompile Include="gracz.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bomba.h" />
     <ClInclude Include="Gra.h" />
     <ClInclude Include="mapa.h" />
     <ClInclude Include="menu.h" />

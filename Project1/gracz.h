@@ -8,6 +8,8 @@ public:
 	sf::Clock zegar;
 	sf::Sprite ludzik;
 	sf::IntRect ksztaltgracza;
+	int max_bomb;
+	int predkosc;
 	Gracz();
 	~Gracz() {};
 	void animuj(int x, int y);

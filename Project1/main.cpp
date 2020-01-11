@@ -1,6 +1,7 @@
 #include "menu.h"
 #include "Gra.h"
 #include "Bomba.h"
+#include "sterowanie.h"
 
 //#define TEST
 
@@ -16,14 +17,15 @@ int main()
 	if (!music.openFromFile("menu_theme.ogg"))
 		return -1; // error
 	music.setLoop(true);
-	/*music.play();*/
+	music.play();
 
 	//Rysuj grê
-	wybrane_menu = 100;
+	//wybrane_menu = 100;
 
 	sf::RenderWindow window(sf::VideoMode(1000, 800), "My Bombeer");// utworz okno
 
 	Menu menu(window.getSize().x, window.getSize().y);
+	Sterowanie sterowanie(window.getSize().x, window.getSize().y);
 	Gra gra;
 
 	// petla wieczna - dopoki okno jest otwarte
@@ -42,24 +44,34 @@ int main()
 			{//obsluga menu z poziomu klawiszy (strzalki)
 				if (event.key.code == sf::Keyboard::Up)
 				{
-					menu.moveIt(-1);
+					if (wybrane_menu == 0) {
+						menu.moveIt(-1);
+					}
+					else if (wybrane_menu == 1) {
+						sterowanie.moveIt(-1);
+					}
 				}
 
 				if (event.key.code == sf::Keyboard::Down)
 				{
-					menu.moveIt(1);
+					if (wybrane_menu == 0) {
+						menu.moveIt(1);
+					}
+					else if (wybrane_menu == 1) {
+						sterowanie.moveIt(1);
+					}
 				}
 				if (wybrane_menu == 0)
 				{//uruchamianie procedur na skutek wyboru menu (wybor poziomu menu to ENTER))
 					if (event.key.code == sf::Keyboard::Enter && menu.getSelectedItem() == 0)
 					{
 						std::cout << "Uruchamiam gre..." << std::endl;
-						wybrane_menu = 1;
+						wybrane_menu = 100;
 					}
 
 					if (event.key.code == sf::Keyboard::Enter && menu.getSelectedItem() == 1)
 					{
-						std::cout << "Najlepsze wyniki..." << std::endl;
+						std::cout << "Sterowanie" << std::endl;
 						wybrane_menu = 1;
 					}
 
@@ -86,6 +98,9 @@ int main()
 		}
 		if (wybrane_menu == 100) {
 			gra.rysuj(window);
+		}
+		if (wybrane_menu == 1) {
+			sterowanie.draw(window);
 		}
 
 

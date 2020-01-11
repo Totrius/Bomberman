@@ -16,7 +16,7 @@ Menu::Menu(float width, float height)
 			menu[i].setString("Nowa gra");
 		}
 		else if (i == 1) {
-			menu[i].setString("Ostatnie wyniki");
+			menu[i].setString("Sterowanie");
 		}
 		else if (i == 2) {
 			menu[i].setString("Wyjscie");

@@ -55,6 +55,34 @@ void Sterowanie::moveIt(int i)
 		sterowanie[selectedItem].setFillColor(sf::Color::Red);
 		sterowanie[selectedItem].setStyle(sf::Text::Bold);
 	}
-
+}
+void Sterowanie::pobierz_sterowanie(std::string a, std::string b, std::string c, std::string d) {
+	std::fstream plik;
+	int nr_linii = 1;
+	plik.open("sterowanie.txt", std::ios::in);
+	if (plik.good() == false) {
+		std::cout << "plik nie istnieje.";
+		exit(0);
+	}
+	std::string linia;
+	while (getline(plik, linia)) {
+		switch (nr_linii) {
+		case 1: a = linia; break;
+		case 2: b = linia; break;
+		case 3: c = linia; break;
+		case 4: d = linia; break;
+		}
+		nr_linii++;
+	}
+	plik.close();
+}
+void Sterowanie::zmien_sterowanie(std::string a, std::string b, std::string c, std::string d) {
+	std::fstream plik;
+	plik.open("sterowanie.txt", std::ios::out);
+	plik << a << std::endl;
+	plik << b << std::endl;
+	plik << c << std::endl;
+	plik << d << std::endl;
+	plik.close();
 
 }

@@ -2,15 +2,18 @@
 #include "Gra.h"
 #include "Bomba.h"
 #include "sterowanie.h"
+#include <fstream>
+#include <cstdlib>
 
-//#define TEST
+
+
 
 int main()
 {
-#ifdef TEST
-	postac();
-	return 0;
-#endif
+	
+
+
+
 	int wybrane_menu = 0;
 
 	sf::Music music;
@@ -19,8 +22,7 @@ int main()
 	music.setLoop(true);
 	music.play();
 
-	//Rysuj grê
-	//wybrane_menu = 100;
+	
 
 	sf::RenderWindow window(sf::VideoMode(1000, 800), "My Bombeer");// utworz okno
 
@@ -73,12 +75,32 @@ int main()
 					{
 						std::cout << "Sterowanie" << std::endl;
 						wybrane_menu = 1;
+						sterowanie.pobierz_sterowanie(sterowanie.nowe_w, sterowanie.nowe_s, sterowanie.nowe_a, sterowanie.nowe_d);
+
 					}
 
 					if (event.key.code == sf::Keyboard::Enter && menu.getSelectedItem() == 2)
 					{
 						std::cout << "Koniec gry..." << std::endl;
 						window.close();
+					}
+				}
+				if (wybrane_menu == 1) {
+					if (event.key.code == sf::Keyboard::Enter && sterowanie.getSelectedItem() == 0) {
+						std::cin >> sterowanie.nowe_w;
+					}
+					if (event.key.code == sf::Keyboard::Enter && sterowanie.getSelectedItem() == 1) {
+						std::cin >> sterowanie.nowe_s;
+					}
+					if (event.key.code == sf::Keyboard::Enter && sterowanie.getSelectedItem() == 2) {
+						std::cin >> sterowanie.nowe_a;
+					}
+					if (event.key.code == sf::Keyboard::Enter && sterowanie.getSelectedItem() == 3) {
+						std::cin >> sterowanie.nowe_d;
+					}
+					if (event.key.code == sf::Keyboard::Enter && sterowanie.getSelectedItem() == 4) {
+						sterowanie.zmien_sterowanie(sterowanie.nowe_w, sterowanie.nowe_s, sterowanie.nowe_a, sterowanie.nowe_d);
+						wybrane_menu = 0;
 					}
 				}
 			}
@@ -97,6 +119,7 @@ int main()
 			menu.draw(window);
 		}
 		if (wybrane_menu == 100) {
+			sterowanie.pobierz_sterowanie(sterowanie.gora, sterowanie.dol, sterowanie.lewo, sterowanie.prawo);
 			gra.rysuj(window);
 		}
 		if (wybrane_menu == 1) {

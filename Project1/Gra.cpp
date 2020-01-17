@@ -11,6 +11,8 @@ Gra::Gra() :
 void Gra::rysuj(sf::RenderWindow& window) {
 	mapa.rysuj(window);
 	gracz.draw(window);
+	przeciwnik.draw(window);
+	
 
 	for (auto it = lista_bomb.begin(); it != lista_bomb.end(); ++it) {
 		it->rysuj(window);
@@ -19,6 +21,7 @@ void Gra::rysuj(sf::RenderWindow& window) {
 	std::cout << lista_bomb.size() << std::endl;
 }
 void Gra::aktualizuj() {
+	przeciwnik.animuj();
 	odstep_czasu = global_clock.restart();
 
 	float ruch_x = gracz.predkosc * odstep_czasu.asSeconds();

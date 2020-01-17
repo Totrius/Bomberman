@@ -5,6 +5,7 @@ typedef struct {
 	bool czy_przechodzi; //czy mo¿na przechodziæ przez klocek?
 	bool czy_zniszczalny; //czy klocek mo¿na zniszczyæ?
 	bool czy_jest_bomba;
+	bool czy_zajety;
 
 	sf::RectangleShape ksztalt; //kszta³t protosk¹ta na ekranie
 	sf::IntRect ksztalt_wewnetrzny; //kszta³t prostok¹ta wewn¹trz tekstury

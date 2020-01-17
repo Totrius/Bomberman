@@ -2,19 +2,19 @@
 #include "Gra.h"
 #include "Bomba.h"
 #include "sterowanie.h"
+#include "Wskazowki.h"
 #include <fstream>
 #include <cstdlib>
+#include <time.h>
 
 
 
 
 int main()
 {
-	
-
-
-
+	srand(time(NULL));
 	int wybrane_menu = 0;
+	bool wyswietl_pomoc = false;
 
 	sf::Music music;
 	if (!music.openFromFile("menu_theme.ogg"))
@@ -28,6 +28,7 @@ int main()
 
 	Menu menu(window.getSize().x, window.getSize().y);
 	Sterowanie sterowanie(window.getSize().x, window.getSize().y);
+	Wskazowki wskazowki(window.getSize().x, window.getSize().y);
 	Gra gra;
 
 	// petla wieczna - dopoki okno jest otwarte
@@ -103,24 +104,32 @@ int main()
 						wybrane_menu = 0;
 					}
 				}
+				if (event.key.code == sf::Keyboard::F1 && wybrane_menu == 100) {
+					wyswietl_pomoc = !wyswietl_pomoc;
+				}
 			}
 		}
 
 
-		if (wybrane_menu == 100) {
+		if (wybrane_menu == 100 && !wyswietl_pomoc) {
 			gra.aktualizuj();
 		}
 
 		// wyczysc obszar rysowania
-		window.clear(sf::Color::Magenta);
+		window.clear(sf::Color::Green);
 	
 		// tutaj umiesc procedury rysujace...
 		if (wybrane_menu == 0) {
 			menu.draw(window);
 		}
 		if (wybrane_menu == 100) {
-			sterowanie.pobierz_sterowanie(sterowanie.gora, sterowanie.dol, sterowanie.lewo, sterowanie.prawo);
-			gra.rysuj(window);
+			
+			if (wyswietl_pomoc) {
+				wskazowki.draw(window);
+			}else{
+				sterowanie.pobierz_sterowanie(sterowanie.gora, sterowanie.dol, sterowanie.lewo, sterowanie.prawo);
+				gra.rysuj(window);
+			}
 		}
 		if (wybrane_menu == 1) {
 			sterowanie.draw(window);

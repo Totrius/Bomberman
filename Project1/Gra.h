@@ -2,6 +2,7 @@
 #include "gracz.h"
 #include "Bomba.h"
 #include "mapa.h"
+#include "Przeciwnik.h"
 #include <SFML/Graphics.hpp>
 #include <list>
 class Gra
@@ -19,6 +20,7 @@ public:
 private:
 	Gracz gracz;
 	Mapa mapa;
+	Przeciwnik przeciwnik;
 	std::list<Bomba> lista_bomb;
 	sf::Texture spritesheet;
 	sf::Clock global_clock;

@@ -143,7 +143,9 @@
     <ClCompile Include="mapa.cpp" />
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="gracz.cpp" />
+    <ClCompile Include="Przeciwnik.cpp" />
     <ClCompile Include="sterowanie.cpp" />
+    <ClCompile Include="Wskazowki.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bomba.h" />
@@ -151,7 +153,9 @@
     <ClInclude Include="mapa.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="gracz.h" />
+    <ClInclude Include="Przeciwnik.h" />
     <ClInclude Include="sterowanie.h" />
+    <ClInclude Include="Wskazowki.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -24,9 +24,16 @@ Mapa::Mapa(int rozmiar_x, int rozmiar_y) {
 				pola_mapy[x][y] = zwroc_pusty(x, y);
 			}
 		}
-
-		if (x > 0 && x < rozmiar_mapy_x-1)
-			pola_mapy[x][5] = zwroc_cegly(x, 5);
+	}
+	for (int x,y,i = 0; i < 40; i++) {
+		while (1) {
+			x = (std::rand() % 15);
+			y = (std::rand() % 11);
+			if (!pola_mapy[x][y].czy_zajety) {
+				pola_mapy[x][y] = zwroc_cegly(x, y);
+				break;
+			}
+		}
 	}
 	
 }
@@ -49,6 +56,7 @@ void Mapa::rysuj(sf::RenderWindow& window) {
 
 pole Mapa::zwroc_cegly(int x, int y) {
 	pole cegla;
+	cegla.czy_zajety = true;
 	cegla.czy_zniszczalny = true;
 	cegla.czy_przechodzi = false;
 	cegla.czy_jest_bomba = false;
@@ -62,6 +70,7 @@ pole Mapa::zwroc_cegly(int x, int y) {
 }
 pole Mapa::zwroc_blok(int x, int y) {
 	pole blok;
+	blok.czy_zajety = true;
 	blok.czy_zniszczalny = false;
 	blok.czy_przechodzi = false;
 	blok.czy_jest_bomba = false;
@@ -75,6 +84,12 @@ pole Mapa::zwroc_blok(int x, int y) {
 }
 pole Mapa::zwroc_pusty(int x, int y) {
 	pole pusty;
+	if ((x == 1 && y == 1) || (x == 1 && y == 2) || (x == 2 && y == 1)) {
+		pusty.czy_zajety = true;
+	}
+	else {
+		pusty.czy_zajety = false;
+	}
 	pusty.czy_zniszczalny = false;
 	pusty.czy_przechodzi = true;
 	pusty.czy_jest_bomba = false;

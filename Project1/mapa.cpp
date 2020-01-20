@@ -39,9 +39,12 @@ Mapa::Mapa(int rozmiar_x, int rozmiar_y) {
 }
 
 Mapa::~Mapa() {
+	if (pola_mapy == nullptr)
+		return;
+
 	//usuwanie dynamicznie utworzonej tablicy 2D
 	for (int i = 0; i < rozmiar_mapy_x; ++i) {
-		delete pola_mapy[i];
+ 		delete[] pola_mapy[i];
 	}
 	delete[] pola_mapy;
 }

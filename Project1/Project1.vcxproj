@@ -137,6 +137,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AnimowanySprite.cpp" />
     <ClCompile Include="Bomba.cpp" />
     <ClCompile Include="Gra.cpp" />
     <ClCompile Include="main.cpp" />
@@ -148,6 +149,7 @@
     <ClCompile Include="Wskazowki.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnimowanySprite.h" />
     <ClInclude Include="Bomba.h" />
     <ClInclude Include="Gra.h" />
     <ClInclude Include="mapa.h" />

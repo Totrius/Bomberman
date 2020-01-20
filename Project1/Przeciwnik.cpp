@@ -23,18 +23,20 @@ void Przeciwnik::draw(sf::RenderWindow& window)
 	window.draw(wrog);
 }
 
-void Przeciwnik::animuj() {
+void Przeciwnik::animuj(sf::Time czas) {
+
+	moj_czas += czas;
 
 	ksztaltwroga.top = rodzaj*64;
 
-	if (zegar.getElapsedTime().asMilliseconds() > 65.0f) {
+	if (moj_czas.asMilliseconds() > 65.0f) {
 		if (ksztaltwroga.left == 320)
 			ksztaltwroga.left = 0;
 		else
 			ksztaltwroga.left += 64;//przemieszczaj sie w poziomie tekstury
 
 		wrog.setTextureRect(ksztaltwroga);
-		zegar.restart();
+		moj_czas = moj_czas.Zero;
 	}
 }
 

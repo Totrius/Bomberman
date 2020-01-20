@@ -6,25 +6,35 @@ Sterowanie::Sterowanie(float width, float height)
 	{
 		return;
 	}
+
+	gora = sf::Keyboard::Key::W;
+	dol = sf::Keyboard::Key::S;
+	lewo = sf::Keyboard::Key::A;
+	prawo = sf::Keyboard::Key::D;
+	bomba = sf::Keyboard::Key::Space;
+
 	//rysowanie elementow menu
 	for (int i = 0; i < MAX_STER; i++) {
 		sterowanie[i].setFont(font);
-		sterowanie[i].setPosition(sf::Vector2f(width / 3, height / (MAX_STER + 1) * (i + 1)));
+		sterowanie[i].setPosition(sf::Vector2f(width / 5, height / (MAX_STER + 1) * (i + 1)));
 		sterowanie[i].setFillColor(sf::Color::White);																	
 		if (i == 0) {																									
 			sterowanie[i].setFillColor(sf::Color::Red);																	
-			sterowanie[i].setString("W górê");																			
+			sterowanie[i].setString("Ustaw ruch w gore");																			
 		}																												
 		else if (i == 1) {																								
-			sterowanie[i].setString("W dó³");																					
+			sterowanie[i].setString("Ustaw ruch w dol");																					
 		}																												
 		else if (i == 2) {																								
-			sterowanie[i].setString("W lewo");																				
+			sterowanie[i].setString("Ustaw ruch w lewo");																				
 		}																												
 		else if (i == 3) {																								
-			sterowanie[i].setString("W prawo");
+			sterowanie[i].setString("Ustaw ruch w prawo");
 		}
 		else if (i == 4) {
+			sterowanie[i].setString("Ustaw stawianie bomb");
+		}
+		else if (i == 5) {
 			sterowanie[i].setString("Wstecz");
 		}
 
@@ -56,33 +66,37 @@ void Sterowanie::moveIt(int i)
 		sterowanie[selectedItem].setStyle(sf::Text::Bold);
 	}
 }
-void Sterowanie::pobierz_sterowanie(std::string a, std::string b, std::string c, std::string d) {
+void Sterowanie::pobierz_sterowanie() {
 	std::fstream plik;
-	int nr_linii = 1;
 	plik.open("sterowanie.txt", std::ios::in);
 	if (plik.good() == false) {
-		std::cout << "plik nie istnieje.";
-		exit(0);
+		std::cout << "pliku nie mozna otworzyc";
+		plik.close();
+		return;
 	}
-	std::string linia;
-	while (getline(plik, linia)) {
-		switch (nr_linii) {
-		case 1: a = linia; break;
-		case 2: b = linia; break;
-		case 3: c = linia; break;
-		case 4: d = linia; break;
-		}
-		nr_linii++;
-	}
+	int klawisz;
+	plik >> klawisz; gora = static_cast<sf::Keyboard::Key>(klawisz);
+	plik >> klawisz; dol = static_cast<sf::Keyboard::Key>(klawisz);
+	plik >> klawisz; lewo = static_cast<sf::Keyboard::Key>(klawisz);
+	plik >> klawisz; prawo = static_cast<sf::Keyboard::Key>(klawisz);
+	plik >> klawisz; bomba = static_cast<sf::Keyboard::Key>(klawisz);
+
 	plik.close();
 }
-void Sterowanie::zmien_sterowanie(std::string a, std::string b, std::string c, std::string d) {
+void Sterowanie::zapisz_sterowanie() {
 	std::fstream plik;
 	plik.open("sterowanie.txt", std::ios::out);
-	plik << a << std::endl;
-	plik << b << std::endl;
-	plik << c << std::endl;
-	plik << d << std::endl;
+	if (plik.good() == false) {
+		plik.close();
+		return;
+	}
+	
+	plik << gora << ' ';
+	plik << dol << ' ';
+	plik << lewo << ' ';
+	plik << prawo << ' ';
+	plik << bomba << ' ';
+
 	plik.close();
 
 }

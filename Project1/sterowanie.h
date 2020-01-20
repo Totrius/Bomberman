@@ -3,7 +3,14 @@
 #include <SFML/Audio.hpp>
 #include <iostream>
 #include <fstream>
-#define MAX_STER 5
+#define MAX_STER 6
+
+#define RUCH_W_GORE 1
+#define RUCH_W_DOL 2
+#define RUCH_W_LEWO 3
+#define RUCH_W_PRAWO 4
+#define RUCH_BOMBA 5
+
 class Sterowanie
 {
 
@@ -12,14 +19,13 @@ private:
 	sf::Text sterowanie[MAX_STER];//maksymalna liczba poziomow
 	int selectedItem = 0;
 	
-
-
 public:
-	std::string gora, dol, lewo, prawo, nowe_w, nowe_s, nowe_a, nowe_d;
+	int czekaj_na_klawisz = 0;
+	sf::Keyboard::Key gora, dol, lewo, prawo, bomba;
 	Sterowanie(float width, float height);
 	~Sterowanie() {};
-	void pobierz_sterowanie(std::string a, std::string b, std::string c, std::string d);
-	void zmien_sterowanie(std::string a, std::string b, std::string c, std::string d);
+	void pobierz_sterowanie();
+	void zapisz_sterowanie();
 	void moveIt(int i);//przesun
 	int getSelectedItem() { return selectedItem; }//zwroc poziom menu
 	void draw(sf::RenderWindow& window);//rysuj menu w oknie

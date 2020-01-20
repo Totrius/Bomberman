@@ -18,10 +18,12 @@ public:
 	~Mapa();
 	sf::Vector2i piksele_na_wspolrzedne(int x, int y);
 	pole& pobierz_pole(int x, int y);
-private:
+	void ustaw_pole(int x, int y, pole& p);
+
 	pole zwroc_cegly(int x, int y);
 	pole zwroc_blok(int x, int y);
 	pole zwroc_pusty(int x, int y);
+private:
 
 	int rozmiar_mapy_x;
 	int rozmiar_mapy_y;

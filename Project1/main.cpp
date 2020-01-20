@@ -20,7 +20,7 @@ int main()
 	if (!music.openFromFile("menu_theme.ogg"))
 		return -1; // error
 	music.setLoop(true);
-	music.play();
+	//music.play();
 
 	
 

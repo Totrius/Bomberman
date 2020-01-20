@@ -12,6 +12,7 @@ public:
 
 	int pobierz_pozycje_x() { return x; }
 	int pobierz_pozycje_y() { return y; }
+	int pobierz_moc() { return moc; }
 
 	void aktualizuj(double czas);
 private:

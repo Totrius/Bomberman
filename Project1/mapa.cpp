@@ -16,16 +16,16 @@ Mapa::Mapa(int rozmiar_x, int rozmiar_y) {
 		for (int y = 0; y < rozmiar_mapy_y; y++) {
 			pola_mapy[x][y].czy_jest_bomba = false;
 			//ustawianie prostok¹ta tekstury w ca³ym spritesheet
-			
-			if (x == 0 || y == 0 || x == rozmiar_mapy_x - 1 || y == rozmiar_mapy_y - 1 || (x%2 == 0 && y%2 ==0)) {
+
+			if (x == 0 || y == 0 || x == rozmiar_mapy_x - 1 || y == rozmiar_mapy_y - 1 || (x % 2 == 0 && y % 2 == 0)) {
 				pola_mapy[x][y] = zwroc_blok(x, y);
 			}
-			else { 
+			else {
 				pola_mapy[x][y] = zwroc_pusty(x, y);
 			}
 		}
 	}
-	for (int x,y,i = 0; i < 40; i++) {
+	for (int x, y, i = 0; i < 40; i++) {
 		while (1) {
 			x = (std::rand() % 15);
 			y = (std::rand() % 11);
@@ -35,7 +35,7 @@ Mapa::Mapa(int rozmiar_x, int rozmiar_y) {
 			}
 		}
 	}
-	
+
 }
 
 Mapa::~Mapa() {
@@ -65,7 +65,7 @@ pole Mapa::zwroc_cegly(int x, int y) {
 	cegla.ksztalt.setTexture(&textura_kafelkow);
 	cegla.ksztalt_wewnetrzny = sf::IntRect(256, 192, 64, 64);
 	cegla.ksztalt.setTextureRect(cegla.ksztalt_wewnetrzny);
-	
+
 	return cegla;
 }
 pole Mapa::zwroc_blok(int x, int y) {
@@ -102,12 +102,16 @@ pole Mapa::zwroc_pusty(int x, int y) {
 	return pusty;
 }
 pole& Mapa::pobierz_pole(int x, int y) {
-	if (x <= 0 || y <= 0 || x>=rozmiar_mapy_x || y>=rozmiar_mapy_y) {
-		auto b = zwroc_blok(x,y);
+	if (x <= 0 || y <= 0 || x >= rozmiar_mapy_x || y >= rozmiar_mapy_y) {
+		auto b = zwroc_blok(x, y);
 		return b;
 	}
 	return pola_mapy[x][y];
 }
+void Mapa::ustaw_pole(int x, int y, pole& p) {
+	pola_mapy[x][y] = p;
+}
+
 sf::Vector2i Mapa::piksele_na_wspolrzedne(int x, int y) {
 	return sf::Vector2i(x / 64, y / 64);
 }

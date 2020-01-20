@@ -1,19 +1,22 @@
 #include "Przeciwnik.h"
 
-#include "mapa.h"
-#include <iostream>
-
-
 Przeciwnik::Przeciwnik() :
-	
 	ksztaltwroga(0, 0, 64, 64),//okresl obszar spritea
 	wrog(tekstura, ksztaltwroga)//utworz spritea powiazanego z tekstura
 {
-	predkosc = 160; //predkosc gracza w pikselach na sekunde
 	tekstura.loadFromFile("tiles.png");//laduj teksture
 	rodzaj = ((std::rand() % 7) + 15);
 	wrog.setTextureRect(ksztaltwroga);
-	wrog.setPosition(832, 576);
+	
+
+	// while (1) {
+	// 	x = (std::rand() % 15);
+	// 	y = (std::rand() % 11);
+	// 	if (!gra.mapa.pobierz_pole(x, y).czy_zajety) {
+	// 		wrog.setPosition(x*64, y*64);
+	// 		break;
+	// 	}
+	// }
 }
 void Przeciwnik::draw(sf::RenderWindow& window)
 {
@@ -31,7 +34,13 @@ void Przeciwnik::animuj() {
 			ksztaltwroga.left += 64;//przemieszczaj sie w poziomie tekstury
 
 		wrog.setTextureRect(ksztaltwroga);
-
 		zegar.restart();
 	}
+}
+
+void Przeciwnik::setPosition(sf::Vector2f vec){
+	wrog.setPosition(vec);
+}
+void Przeciwnik::move(sf::Vector2f vec){
+	wrog.move(vec);
 }

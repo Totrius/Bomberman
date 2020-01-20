@@ -14,17 +14,22 @@ public:
 	bool czy_kolizja(sf::Vector2f p1, sf::Vector2f p2);
 	void rysuj(sf::RenderWindow &window);
 	void aktualizuj();
+	void ruch_gracza();
 	void stworz_bombe(int x, int y, int moc);
-	
-	
+		
 private:
+
+	void dodaj_przeciwnika();
+	void aktualizacja_bomb();
+
 	Gracz gracz;
 	Mapa mapa;
-	Przeciwnik przeciwnik;
+
+	std::list<Przeciwnik> lista_przeciwnikow;
 	std::list<Bomba> lista_bomb;
+
 	sf::Texture spritesheet;
 	sf::Clock global_clock;
 	sf::Time odstep_czasu;
-
 };
 

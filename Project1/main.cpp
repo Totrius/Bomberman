@@ -3,6 +3,7 @@
 #include "Bomba.h"
 #include "sterowanie.h"
 #include "Wskazowki.h"
+#include "Wychodzenie.h"
 #include <fstream>
 #include <cstdlib>
 #include <time.h>
@@ -19,6 +20,7 @@ int main()
 	srand(time(NULL));
 	int wybrane_menu = 0;
 	bool wyswietl_pomoc = false;
+	bool wyswietl_wyjscie = false;
 
 	sf::Music music;
 	if (!music.openFromFile("menu_theme.ogg"))
@@ -32,6 +34,7 @@ int main()
 	Sterowanie sterowanie(window.getSize().x, window.getSize().y);
 	sterowanie.pobierz_sterowanie();
 	Wskazowki wskazowki(window.getSize().x, window.getSize().y);
+	Wychodzenie wychodzenie(window.getSize().x, window.getSize().y);
 	Gra gra;
 	gra.stery_bajery = &sterowanie;
 
@@ -125,6 +128,12 @@ int main()
 				if (event.key.code == sf::Keyboard::F1 && wybrane_menu == MENU_GRA) {
 					wyswietl_pomoc = !wyswietl_pomoc;
 				}
+				if (event.key.code == sf::Keyboard::Escape && wybrane_menu == MENU_GRA) {
+					wyswietl_wyjscie = !wyswietl_wyjscie;
+				}
+				if (wyswietl_wyjscie && event.key.code == sf::Keyboard::T) {
+					window.close();
+				}
 			}
 		}
 
@@ -145,7 +154,9 @@ int main()
 			if (wyswietl_pomoc) {
 				wskazowki.draw(window);
 			}
-			else
+			else if (wyswietl_wyjscie) {
+				wychodzenie.draw(window);
+			} else
 			{
 				gra.rysuj(window);
 			}

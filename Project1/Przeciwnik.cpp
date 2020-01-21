@@ -1,48 +1,37 @@
 #include "Przeciwnik.h"
 
-Przeciwnik::Przeciwnik() :
-	ksztaltwroga(0, 0, 64, 64),//okresl obszar spritea
-	wrog(tekstura, ksztaltwroga)//utworz spritea powiazanego z tekstura
+Przeciwnik::Przeciwnik(sf::Texture& tekstura, int* klatki, int ilosc_klatek) :
+	sprite(tekstura, klatki, ilosc_klatek)
 {
-	tekstura.loadFromFile("tiles.png");//laduj teksture
-	rodzaj = ((std::rand() % 7) + 15);
-	wrog.setTextureRect(ksztaltwroga);
-	
-
-	// while (1) {
-	// 	x = (std::rand() % 15);
-	// 	y = (std::rand() % 11);
-	// 	if (!gra.mapa.pobierz_pole(x, y).czy_zajety) {
-	// 		wrog.setPosition(x*64, y*64);
-	// 		break;
-	// 	}
-	// }
+	sprite.czas_klatki = 0.1;
 }
-void Przeciwnik::draw(sf::RenderWindow& window)
+void Przeciwnik::update(sf::Time czas)
 {
-	window.draw(wrog);
-}
-
-void Przeciwnik::animuj(sf::Time czas) {
+	sprite.animuj(czas);
 
 	moj_czas += czas;
 
-	ksztaltwroga.top = rodzaj*64;
-
-	if (moj_czas.asMilliseconds() > 65.0f) {
-		if (ksztaltwroga.left == 320)
-			ksztaltwroga.left = 0;
-		else
-			ksztaltwroga.left += 64;//przemieszczaj sie w poziomie tekstury
-
-		wrog.setTextureRect(ksztaltwroga);
+	if (moj_czas.asSeconds() > czas_reakcji) {
+		zmien_kierunek();
 		moj_czas = moj_czas.Zero;
 	}
 }
-
-void Przeciwnik::setPosition(sf::Vector2f vec){
-	wrog.setPosition(vec);
+void Przeciwnik::zmien_kierunek()
+{
+	kierunek = rand() % 4;
 }
-void Przeciwnik::move(sf::Vector2f vec){
-	wrog.move(vec);
+void Przeciwnik::draw(sf::RenderWindow& window)
+{
+	window.draw(sprite);
+}
+
+void Przeciwnik::setPosition(sf::Vector2f vec) {
+	x = vec.x;
+	y = vec.y;
+	sprite.setPosition(vec);
+}
+void Przeciwnik::move(sf::Vector2f vec) {
+	x += vec.x;
+	y += vec.y;
+	sprite.move(vec);
 }

@@ -147,6 +147,7 @@
     <ClCompile Include="Przeciwnik.cpp" />
     <ClCompile Include="sterowanie.cpp" />
     <ClCompile Include="Wskazowki.cpp" />
+    <ClCompile Include="Wychodzenie.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimowanySprite.h" />
@@ -158,6 +159,7 @@
     <ClInclude Include="Przeciwnik.h" />
     <ClInclude Include="sterowanie.h" />
     <ClInclude Include="Wskazowki.h" />
+    <ClInclude Include="Wychodzenie.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

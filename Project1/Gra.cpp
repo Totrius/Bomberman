@@ -1,6 +1,8 @@
 #include "Gra.h"
 #include <iostream>
 
+#define ILOSC_PRZECIWNIKOW 15
+
 Gra::Gra() :
 	mapa(15, 11)
 {
@@ -18,6 +20,22 @@ Gra::Gra() :
 		klatki_wybuch_pionowo[i * 2] = klatki_wybuch_srodek[i * 2];
 		klatki_wybuch_pionowo[i * 2 + 1] = klatki_wybuch_srodek[i * 2 + 1] - 64;
 	}
+
+	klatki_stforki = new int[12 * 7];
+	for (int numer_stforka = 0; numer_stforka < 7; numer_stforka++)
+	{
+		int y = 960 + numer_stforka * 64;
+		for (int numer_klatki = 0; numer_klatki < 6; numer_klatki++)
+		{
+			int x = numer_klatki * 64;
+			klatki_stforki[numer_stforka * 12 + numer_klatki * 2] = x;
+			klatki_stforki[numer_stforka * 12 + numer_klatki * 2 + 1] = y;
+		}
+	}
+	for (int i = 0; i < ILOSC_PRZECIWNIKOW; i++)
+	{
+		dodaj_przeciwnika();
+	}
 }
 
 void Gra::rysuj(sf::RenderWindow& window) {
@@ -30,39 +48,38 @@ void Gra::rysuj(sf::RenderWindow& window) {
 	for (auto& bomba : lista_bomb)
 		bomba.rysuj(window);
 
-	for (auto& wybuch : wybuchy)
-		if (wybuch.zyje)
-			window.draw(wybuch);
-
-	//std::cout << lista_bomb.size() << std::endl;
+	for (auto& efekt : efekty)
+		if (efekt.zyje)
+			window.draw(efekt);
 }
 void Gra::aktualizuj() {
 	odstep_czasu = global_clock.restart();
 
 	for (auto& przeciwnik : lista_przeciwnikow)
-		przeciwnik.animuj(odstep_czasu);
+		przeciwnik.update(odstep_czasu);
 
 	ruch_gracza();
+	ruch_przeciwnikow();
 	aktualizacja_bomb();
 
-	//usun wypalone wybuchy
-	auto sprite_wybuch = wybuchy.begin();
-	while (sprite_wybuch != wybuchy.end())
-		if (sprite_wybuch->zyje == false) {
-			wybuchy.erase(sprite_wybuch++);
+	//usun skonczone wybuchy
+	auto sprite_efekt = efekty.begin();
+	while (sprite_efekt != efekty.end())
+		if (sprite_efekt->zyje == false) {
+			efekty.erase(sprite_efekt++);
 		}
 		else {
-			sprite_wybuch->animuj(odstep_czasu);
-			++sprite_wybuch;
+			sprite_efekt->animuj(odstep_czasu);
+			++sprite_efekt;
 		}
 }
 
-void Gra::utworz_ogien(int x, int y, int* klatki)
+void Gra::dodaj_efekt(int x, int y, int* klatki, int ilosc_klatek)
 {
-	auto wybuch_srodek = AnimowanySprite(spritesheet, klatki, klatki_wybuch_ilosc);
-	wybuch_srodek.setPosition(x * 64, y * 64);
-	wybuch_srodek.jednorazowa = true;
-	wybuchy.push_back(wybuch_srodek);
+	auto nowy_efekt = AnimowanySprite(spritesheet, klatki, ilosc_klatek);
+	nowy_efekt.setPosition(x, y);
+	nowy_efekt.jednorazowa = true;
+	efekty.push_back(nowy_efekt);
 }
 
 void Gra::aktualizacja_bomb()
@@ -93,7 +110,7 @@ void Gra::aktualizacja_bomb()
 			sf::Vector2i wspolrzedne_ognia[25];
 			int ilosc_ogni = 0;
 
-			utworz_ogien(x, y, klatki_wybuch_srodek);
+			dodaj_efekt(x * 64, y * 64, klatki_wybuch_srodek, klatki_wybuch_ilosc);
 
 			wspolrzedne_ognia[ilosc_ogni++] = { x, y };
 			//badaj w górê
@@ -104,7 +121,7 @@ void Gra::aktualizacja_bomb()
 				}
 				else {
 					wspolrzedne_ognia[ilosc_ogni++] = { x, cy };
-					utworz_ogien(x, cy, klatki_wybuch_pionowo);
+					dodaj_efekt(x * 64, cy * 64, klatki_wybuch_pionowo, klatki_wybuch_ilosc);
 				}
 			}
 
@@ -116,7 +133,7 @@ void Gra::aktualizacja_bomb()
 				}
 				else {
 					wspolrzedne_ognia[ilosc_ogni++] = { x, cy };
-					utworz_ogien(x, cy, klatki_wybuch_pionowo);
+					dodaj_efekt(x * 64, cy * 64, klatki_wybuch_pionowo, klatki_wybuch_ilosc);
 				}
 			}
 
@@ -128,7 +145,7 @@ void Gra::aktualizacja_bomb()
 				}
 				else {
 					wspolrzedne_ognia[ilosc_ogni++] = { cx, y };
-					utworz_ogien(cx, y, klatki_wybuch_poziomo);
+					dodaj_efekt(cx * 64, y * 64, klatki_wybuch_poziomo, klatki_wybuch_ilosc);
 				}
 			}
 
@@ -140,7 +157,7 @@ void Gra::aktualizacja_bomb()
 				}
 				else {
 					wspolrzedne_ognia[ilosc_ogni++] = { cx, y };
-					utworz_ogien(cx, y, klatki_wybuch_poziomo);
+					dodaj_efekt(cx * 64, y * 64, klatki_wybuch_poziomo, klatki_wybuch_ilosc);
 				}
 			}
 
@@ -188,6 +205,78 @@ void Gra::aktualizacja_bomb()
 
 void Gra::dodaj_przeciwnika()
 {
+	int x, y;
+	while (1) {
+		x = (std::rand() % 15);
+		y = (std::rand() % 11);
+		if (!mapa.pobierz_pole(x, y).czy_zajety) {
+
+			int rodzaj = rand() % 7;
+
+			Przeciwnik bobi(spritesheet, (klatki_stforki + rodzaj * 12), 6);
+			bobi.setPosition(sf::Vector2f(x * 64, y * 64));
+			lista_przeciwnikow.push_back(bobi);
+
+			break;
+		}
+	}
+}
+
+void Gra::ruch_przeciwnikow() {
+
+	for (auto& przeciwnik : lista_przeciwnikow) {
+
+		float ruch_x = 0, ruch_y = 0;
+
+		switch (przeciwnik.kierunek) {
+		case KIERUNEK_GORA: {ruch_y = -przeciwnik.predkosc; break; }
+		case KIERUNEK_DOL: {ruch_y = przeciwnik.predkosc; break; }
+		case KIERUNEK_LEWO: {ruch_x = -przeciwnik.predkosc; break; }
+		case KIERUNEK_PRAWO: {ruch_x = przeciwnik.predkosc; break; }
+		}
+
+		ruch_x *= odstep_czasu.asSeconds();
+		ruch_y *= odstep_czasu.asSeconds();
+
+		sf::Vector2f nowa_pozycja_przeciwnika = przeciwnik.getPosition();
+
+		nowa_pozycja_przeciwnika.y += ruch_y;
+		nowa_pozycja_przeciwnika.x += ruch_x;
+
+		sf::Vector2i pozycja_klocka1, pozycja_klocka2;
+
+		switch (przeciwnik.kierunek) {
+		case KIERUNEK_GORA: {
+			pozycja_klocka1 = mapa.piksele_na_wspolrzedne(nowa_pozycja_przeciwnika.x + 2, nowa_pozycja_przeciwnika.y);
+			pozycja_klocka2 = mapa.piksele_na_wspolrzedne(nowa_pozycja_przeciwnika.x + 62, nowa_pozycja_przeciwnika.y);
+			break;
+		}
+		case KIERUNEK_DOL: {
+			pozycja_klocka1 = mapa.piksele_na_wspolrzedne(nowa_pozycja_przeciwnika.x + 2, nowa_pozycja_przeciwnika.y + 64);
+			pozycja_klocka2 = mapa.piksele_na_wspolrzedne(nowa_pozycja_przeciwnika.x + 62, nowa_pozycja_przeciwnika.y + 64);
+			break;
+		}
+		case KIERUNEK_LEWO: {
+			pozycja_klocka1 = mapa.piksele_na_wspolrzedne(nowa_pozycja_przeciwnika.x, nowa_pozycja_przeciwnika.y + 2);
+			pozycja_klocka2 = mapa.piksele_na_wspolrzedne(nowa_pozycja_przeciwnika.x, nowa_pozycja_przeciwnika.y + 62);
+			break; }
+		case KIERUNEK_PRAWO: {
+			pozycja_klocka1 = mapa.piksele_na_wspolrzedne(nowa_pozycja_przeciwnika.x + 64, nowa_pozycja_przeciwnika.y + 2);
+			pozycja_klocka2 = mapa.piksele_na_wspolrzedne(nowa_pozycja_przeciwnika.x + 64, nowa_pozycja_przeciwnika.y + 62);
+			break;
+		}
+		}
+
+		if (mapa.pobierz_pole(pozycja_klocka1.x, pozycja_klocka1.y).czy_przechodzi &&
+			mapa.pobierz_pole(pozycja_klocka2.x, pozycja_klocka2.y).czy_przechodzi) {
+			przeciwnik.move(sf::Vector2f(ruch_x, ruch_y));
+		}
+		else {
+			przeciwnik.zmien_kierunek();
+		}
+
+	}
+
 }
 
 void Gra::ruch_gracza()

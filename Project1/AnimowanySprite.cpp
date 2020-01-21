@@ -9,8 +9,6 @@ void AnimowanySprite::aktualizuj_klatke()
 			klatki[obecna_klatka * 2 + 1],
 			rozmiar_klatki, rozmiar_klatki
 		));
-
-	
 }
 
 AnimowanySprite::AnimowanySprite(const sf::Texture& texture, int* klatki, int ilosc_klatek) :
@@ -18,6 +16,12 @@ AnimowanySprite::AnimowanySprite(const sf::Texture& texture, int* klatki, int il
 {
 	this->klatki = klatki;
 	this->ilosc_klatek = ilosc_klatek;
+	aktualizuj_klatke();
+}
+
+void AnimowanySprite::setTexture(const sf::Texture& texture, bool resetRect)
+{
+	sf::Sprite::setTexture(texture, resetRect);
 	aktualizuj_klatke();
 }
 
